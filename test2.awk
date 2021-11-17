@@ -1,4 +1,4 @@
-awk '
+gawk '
 BEGIN {
     i = 0;
 }

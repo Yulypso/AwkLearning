@@ -1,4 +1,4 @@
-awk '
+gawk '
 BEGIN {}
 {
     if($1 == "interface") {

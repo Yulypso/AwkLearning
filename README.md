@@ -21,6 +21,6 @@ $ cd RichAwk
 
 ## Run Awk/Gawk scripts
 
-```awk
+```sh
 $ ./<script.awk> <path/to/file>
 ```

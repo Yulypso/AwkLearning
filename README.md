@@ -11,6 +11,16 @@
 ## Setup
 
 ```bash
-$ git clone https://github.com/Yulypso/AwkLearning.git
-$ cd AwkLearning
+$ git clone https://github.com/Yulypso/RichAwk.git
+$ cd RichAwk
+```
+
+---
+
+<br/>
+
+## Run Awk/Gawk scripts
+
+```awk
+$ ./<script.awk> <path/to/file>
 ```

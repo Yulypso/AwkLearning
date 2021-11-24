@@ -19,8 +19,8 @@ BEGIN {
 } 
 END {
     if(serviceFound)
-        print ">>> snmp-server properly configured: " line " (line: " nl ")";    
+        print "[V] snmp-server properly configured: " line " (line: " nl ")";    
     else
-        print ">>> snmp-server is not properly configured: " line " (line: " nl ")"; 
+        print "[X] snmp-server is not properly configured: " line " (line: " nl ")"; 
 }
 ' $1

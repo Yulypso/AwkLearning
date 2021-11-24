@@ -1,7 +1,6 @@
 gawk '
 BEGIN {
     nl;
-    currBlock = 0;
     blockNb = 0;
     isprint = 0;
     lin = 0;

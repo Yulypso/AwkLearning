@@ -38,23 +38,23 @@ END {
             if(interfaceContents[i][j] ~/^(.)*mode trunk(.)*$/)
                 trunkMode = 1;
 
-            # trunk encapsulation
+            # encapsulation
             if(interfaceContents[i][j] ~/^(.)*encapsulation(.)*$/)
                 trunkEncapsulation = 1;
             
-            # trunk native vlan
+            # native vlan
             if(interfaceContents[i][j] ~/^(.)*native vlan(.)*$/)
                 trunkNativeVlan = 1;
 
-            # trunk allowed vlan
+            # allowed vlan
             if(interfaceContents[i][j] ~/^(.)*allowed vlan(.)*$/)
                 trunkAllowedVlan = 1;
             
-            # trunk port security
+            # port security
             if(interfaceContents[i][j] ~/^(.)*port-security(.)*$/)
                 portSecurity = 1;
             
-            # trunk mode access
+            # mode access
             if(interfaceContents[i][j] ~/^(.)*mode access(.)*$/)
                 modeAccess = 1;
         }

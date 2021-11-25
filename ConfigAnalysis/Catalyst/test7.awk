@@ -15,7 +15,7 @@ BEGIN {
     if($1 == "interface")
     {
         interfaces[i] = $0
-        interface[i][nl] = NR;
+        interface[i][nl] = FNR;
     }
     
     if($1 == "switchport")
@@ -62,7 +62,7 @@ END {
         if(modeAccess == 1)
         {
             if(!(!trunkEncapsulation && !trunkAllowedVlan && !trunkNativeVlan && portSecurity && !trunkMode))
-                print "[X] Mode access is not properly configured: " interfaces[i] " (line: " interface[i][nl] ")";
+                print "[X] Mode access is not properly configured: " interfaces[i] " (" FILENAME " line: " interface[i][nl] ")";
         }
 
         trunkMode = 0;
@@ -73,4 +73,4 @@ END {
         modeAccess = 0;
     }
 }
-' $1
+' $1 $2 $3

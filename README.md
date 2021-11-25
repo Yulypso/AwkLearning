@@ -20,8 +20,16 @@ $ cd RichAwk
 <br/>
 
 ## Run Awk/Gawk scripts
+ 
+```bash
+$ cd ConfigAnalysis
 
-```sh
-$ cd <dir>
-$ ./<script.awk> <path/to/file>
+$ ./Router/test1.awk ./Files/router.unix
+$ ./Router/test2.awk ./Files/router.unix
+$ ./Router/test3.awk ./Files/router.unix
+$ ./Router/test4.awk ./Files/router.unix
+$ ./Router/test5.awk ./Files/router.unix
+$ ./Catalyst/test6.awk ./Files/cat[1-3].unix
+$ ./Catalyst/test7.awk ./Files/cat[1-3].unix
+$ ./IPSec/test8.awk ./Files/conf[1-3].unix
 ```

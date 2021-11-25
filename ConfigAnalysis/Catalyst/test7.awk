@@ -17,6 +17,7 @@ BEGIN {
         interfaces[i] = $0
         interface[i][nl] = NR;
     }
+
     
     if($1 == "switchport")
         interfaceContents[i][j++] = $0
@@ -32,8 +33,12 @@ END {
 
     for(i = 0; i < length(interfaces); ++i)
     {
+        print interfaces[i], "(line: " interface[i][nl] ")";
+        
         for(j = 0; j < length(interfaceContents[i]); ++j)
         {
+            print interfaceContents[i][j];
+
             # mode trunk
             if(interfaceContents[i][j] ~/^(.)*mode trunk(.)*$/)
                 trunkMode = 1;
@@ -61,8 +66,10 @@ END {
 
         if(trunkMode == 1)
         {
-            if(!(trunkEncapsulation && trunkAllowedVlan && trunkNativeVlan && !portSecurity && !modeAccess))
-                print "[X] Trunk mode is not properly configured: " interfaces[i] " (line: " interface[i][nl] ")";
+            if(trunkEncapsulation && trunkAllowedVlan && trunkNativeVlan && !portSecurity && !modeAccess)
+                print "[V] Trunk mode is properly configured (line: " interface[i][nl] ")";
+            else
+                print "[X] Trunk mode is not properly configured: " interface[i] "(line: " interface[i][nl] ")";
         }
 
         trunkMode = 0;

@@ -12,9 +12,7 @@ BEGIN {
 
 } 
 END {
-    if(serviceFound)
-        print "[V] service password-encryption is properly configured (line: " nl ")";
-    else
+    if(!serviceFound)
         print "[X] service password-encryption is not properly configured"
 }
 ' $1

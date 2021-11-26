@@ -1,76 +1,14 @@
 gawk '
 BEGIN {
-    i = -1;
-    j = 0;
-    interfaces[0] = ""
-    interfaceContents[0][0] = ""
+    found = 0;
 }
 {
-    if($1 == "!")
-    {
-        j = 0;
-        i++;
-    }
-
-    if($1 == "interface")
-    {
-        interfaces[i] = $0
-        interface[i][nl] = FNR;
-    }
-    
-    if($1 == "switchport")
-        interfaceContents[i][j++] = $0
-
+    if($1 == "access-list" && $2 == "110" && $5 == "10.0.1.0" && $6 == "0.0.0.255" && (($7 == "10.0.1.0" && $8 == "0.0.0.255") || ($7 == "" && $8 == "")))
+        found = 1;
+    if($1 == "end" && found != 1)
+        print "[X] No access-list 110 properly configured: (" FILENAME ")";
+    else if($1 == "end" && found == 1)
+        found = 0;
 } 
-END {
-    trunkEncapsulation = 0;
-    trunkMode = 0;
-    trunkAllowedVlan = 0;
-    trunkNativeVlan = 0;
-    portSecurity = 0;
-    modeAccess = 0;
-
-    for(i = 0; i < length(interfaces); ++i)
-    {
-        for(j = 0; j < length(interfaceContents[i]); ++j)
-        {
-            # mode trunk
-            if(interfaceContents[i][j] ~/^(.)*mode trunk(.)*$/)
-                trunkMode = 1;
-
-            # encapsulation
-            if(interfaceContents[i][j] ~/^(.)*encapsulation(.)*$/)
-                trunkEncapsulation = 1;
-            
-            # native vlan
-            if(interfaceContents[i][j] ~/^(.)*native vlan(.)*$/)
-                trunkNativeVlan = 1;
-
-            # allowed vlan
-            if(interfaceContents[i][j] ~/^(.)*allowed vlan(.)*$/)
-                trunkAllowedVlan = 1;
-            
-            # port security
-            if(interfaceContents[i][j] ~/^(.)*port-security(.)*$/)
-                portSecurity = 1;
-            
-            # mode access
-            if(interfaceContents[i][j] ~/^(.)*mode access(.)*$/)
-                modeAccess = 1;
-        }
-
-        if(modeAccess == 1)
-        {
-            if(!(!trunkEncapsulation && !trunkAllowedVlan && !trunkNativeVlan && portSecurity && !trunkMode))
-                print "[X] Mode access is not properly configured: " interfaces[i] " (" FILENAME " line: " interface[i][nl] ")";
-        }
-
-        trunkMode = 0;
-        trunkNativeVlan = 0;
-        trunkAllowedVlan = 0;
-        trunkEncapsulation = 0;
-        portSecurity = 0;
-        modeAccess = 0;
-    }
-}
+END {}
 ' $1 $2 $3

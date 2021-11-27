@@ -1,76 +1,100 @@
 gawk '
 BEGIN {
-    i = -1;
+    ### Definition des crypto-map
+    i = 0;
     j = 0;
-    interfaces[0] = ""
-    interfaceContents[0][0] = ""
+    k = 0;
+    nl = 0;
+    matchAddressLine[0] = 0;
+
+    inCryptoMapBlock = 0;
+    matchAddress = 0;
+    
+    cryptoMaps[0] = "";
+    cryptoMapsId[0] = "";
+
+    matchAddresses[0] = "";
+    accessLists[0] = "";
+
+    cryptoMapFound = 0;
+    peerFound = 0;
+    transformSetFound = 0;
+    matchAddressFound = 0;
+
+    isCryptoMapValid = 0;
+
+    ### Application crypto-map pour FastEthernet
+    inFastEthernetBlock = 0;
+    
 }
 {
     if($1 == "!")
     {
-        j = 0;
-        i++;
+        if(inCryptoMapBlock && peerFound && transformSetFound && matchAddressFound)
+        {
+            isCryptoMapValid = 1;
+            matchAddressLine[j] = nl;
+            matchAddresses[j++] = matchAddress;
+        }
+
+        inCryptoMapBlock = 0;
+        peerFound = 0;
+        transformSetFound = 0;
+        matchAddressFound = 0;
+        matchAddress = "";
     }
 
-    if($1 == "interface")
+    if($1 == "crypto" && $2 == "map")
     {
-        interfaces[i] = $0
-        interface[i][nl] = FNR;
+        inCryptoMapBlock = 1;
+        cryptoMapFound = 1;
+        cryptoMapsLine[i] = NR
+        cryptoMapsId[i++] = $3;
     }
-    
-    if($1 == "switchport")
-        interfaceContents[i][j++] = $0
 
+    if(inCryptoMapBlock)
+    {
+        if($1 == "set" && $2 == "peer")
+            peerFound = 1;
+        
+        if($1 == "set" && $2 == "transform-set")
+            transformSetFound = 1;
+
+        if($1 == "match" && $2 == "address")
+        {
+            matchAddressFound = 1;
+            nl = NR;
+            matchAddress = $3;
+        }
+    }
+    else
+    {
+        if($1 == "access-list")
+            accessLists[k++] = $2;
+    }
 } 
 END {
-    trunkEncapsulation = 0;
-    trunkMode = 0;
-    trunkAllowedVlan = 0;
-    trunkNativeVlan = 0;
-    portSecurity = 0;
-    modeAccess = 0;
-
-    for(i = 0; i < length(interfaces); ++i)
+    if(isCryptoMapValid)
     {
-        for(j = 0; j < length(interfaceContents[i]); ++j)
+        found = 0;
+
+        for(i = 0; i < length(matchAddresses); ++i)
         {
-            # mode trunk
-            if(interfaceContents[i][j] ~/^(.)*mode trunk(.)*$/)
-                trunkMode = 1;
-
-            # encapsulation
-            if(interfaceContents[i][j] ~/^(.)*encapsulation(.)*$/)
-                trunkEncapsulation = 1;
-            
-            # native vlan
-            if(interfaceContents[i][j] ~/^(.)*native vlan(.)*$/)
-                trunkNativeVlan = 1;
-
-            # allowed vlan
-            if(interfaceContents[i][j] ~/^(.)*allowed vlan(.)*$/)
-                trunkAllowedVlan = 1;
-            
-            # port security
-            if(interfaceContents[i][j] ~/^(.)*port-security(.)*$/)
-                portSecurity = 1;
-            
-            # mode access
-            if(interfaceContents[i][j] ~/^(.)*mode access(.)*$/)
-                modeAccess = 1;
+            for(j = 0; j < length(accessLists); ++j)
+            {
+                if(matchAddresses[i] == accessLists[j])
+                {
+                    found = 1
+                    break;
+                }
+            }
+            if(!found)
+                print "[X] Defined [match address " matchAddresses[i] "] but not applied. (line: " matchAddressLine[i] ")";
+            found = 0;
         }
-
-        if(modeAccess == 1)
-        {
-            if(!(!trunkEncapsulation && !trunkAllowedVlan && !trunkNativeVlan && portSecurity && !trunkMode))
-                print "[X] Mode access is not properly configured: " interfaces[i] " (" FILENAME " line: " interface[i][nl] ")";
-        }
-
-        trunkMode = 0;
-        trunkNativeVlan = 0;
-        trunkAllowedVlan = 0;
-        trunkEncapsulation = 0;
-        portSecurity = 0;
-        modeAccess = 0;
     }
+    else
+        print "[X]: No crypto map properly defined"
+    
 }
 ' $1 $2 $3

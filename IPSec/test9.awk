@@ -27,16 +27,24 @@ BEGIN {
     l = 0;
     inFastEthernetBlock = 0;
     fastEthernetLine = 0;
+    fastEthernet = 0;
 
     cryptoMapsAppliedId[0];
     cryptoMapApplied = 0;
     cryptoMapAppliedLine[0];
     cryptoMapAppliedFound = 0;
 
+    isCryptoMapValid = 0;
+
+    ### To know when next file
+    fileN = FILENAME;
 }
 {
-    if($1 == "end")
+    if(fileN != FILENAME)
+    {
         isCryptoMapValid = 0;
+        fileN = FILENAME;
+    }
 
     if($1 == "!")
     {
@@ -48,7 +56,7 @@ BEGIN {
         }
 
         if(inFastEthernetBlock && !cryptoMapAppliedFound)
-            print "[X]: No crypto map (properly) applied. (" FILENAME " line: " fastEthernetLine ")";
+            print "[X] No crypto map applied for [" fastEthernet "] (" FILENAME " line: " fastEthernetLine ")";
         else if (inFastEthernetBlock && cryptoMapAppliedFound)
         {
             cryptoMapAppliedLine[l] = nl;
@@ -64,6 +72,7 @@ BEGIN {
         inFastEthernetBlock = 0;
         cryptoMapAppliedFound = 0;
         cryptoMapApplied = 0;
+        fastEthernet = 0;
     }
 
     if($0 ~/^(crypto map)(.)*$/)
@@ -96,7 +105,10 @@ BEGIN {
     }
 
     if($1 == "interface" && $2 ~/^(.)*FastEthernet(.)*$/)
+    {
         inFastEthernetBlock = 1;
+        fastEthernet = $0;
+    }
     
     if(inFastEthernetBlock)
     {
@@ -126,12 +138,12 @@ END {
                 }
             }
             if(!found)
-                print "[X] Defined [match address " matchAddresses[i] "] but not applied. (" FILENAME " line: " matchAddressLine[i] ")";
+                print "[X] Applied [match address " matchAddresses[i] "] but not defined. (" FILENAME " line: " matchAddressLine[i] ")";
             found = 0;
         }
     }
     else
-        print "[X] No crypto map properly defined (" FILENAME ")";
+        print "[X] No crypto map properly defined in configuration file. (" FILENAME ")";
     
     for(i = 0; i < length(cryptoMapsAppliedId); ++i)
     {

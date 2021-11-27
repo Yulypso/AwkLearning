@@ -5,16 +5,16 @@ BEGIN {
     j = 0;
     k = 0;
     nl = 0;
-    matchAddressLine[0] = 0;
+    matchAddressLine[0];
 
     inCryptoMapBlock = 0;
     matchAddress = 0;
     
-    cryptoMaps[0] = "";
-    cryptoMapsId[0] = "";
+    cryptoMaps[0];
+    cryptoMapsId[0];
 
-    matchAddresses[0] = "";
-    accessLists[0] = "";
+    matchAddresses[0];
+    accessLists[0];
 
     cryptoMapFound = 0;
     peerFound = 0;
@@ -24,10 +24,20 @@ BEGIN {
     isCryptoMapValid = 0;
 
     ### Application crypto-map pour FastEthernet
+    l = 0;
     inFastEthernetBlock = 0;
-    
+    fastEthernetLine = 0;
+
+    cryptoMapsAppliedId[0];
+    cryptoMapApplied = 0;
+    cryptoMapAppliedLine[0];
+    cryptoMapAppliedFound = 0;
+
 }
 {
+    if($1 == "end")
+        isCryptoMapValid = 0;
+
     if($1 == "!")
     {
         if(inCryptoMapBlock && peerFound && transformSetFound && matchAddressFound)
@@ -37,14 +47,26 @@ BEGIN {
             matchAddresses[j++] = matchAddress;
         }
 
+        if(inFastEthernetBlock && !cryptoMapAppliedFound)
+            print "[X]: No crypto map (properly) applied. (" FILENAME " line: " fastEthernetLine ")";
+        else if (inFastEthernetBlock && cryptoMapAppliedFound)
+        {
+            cryptoMapAppliedLine[l] = nl;
+            cryptoMapsAppliedId[l++] = cryptoMapApplied;
+        }
+
         inCryptoMapBlock = 0;
         peerFound = 0;
         transformSetFound = 0;
         matchAddressFound = 0;
         matchAddress = "";
+
+        inFastEthernetBlock = 0;
+        cryptoMapAppliedFound = 0;
+        cryptoMapApplied = 0;
     }
 
-    if($1 == "crypto" && $2 == "map")
+    if($0 ~/^(crypto map)(.)*$/)
     {
         inCryptoMapBlock = 1;
         cryptoMapFound = 1;
@@ -72,6 +94,21 @@ BEGIN {
         if($1 == "access-list")
             accessLists[k++] = $2;
     }
+
+    if($1 == "interface" && $2 ~/^(.)*FastEthernet(.)*$/)
+        inFastEthernetBlock = 1;
+    
+    if(inFastEthernetBlock)
+    {
+        fastEthernetLine = NR; 
+
+        if($0 ~/^( crypto map)(.)*$/)
+        {
+            cryptoMapAppliedFound = 1;
+            cryptoMapApplied = $3;
+            nl = NR;
+        }
+    }
 } 
 END {
     if(isCryptoMapValid)
@@ -89,12 +126,26 @@ END {
                 }
             }
             if(!found)
-                print "[X] Defined [match address " matchAddresses[i] "] but not applied. (line: " matchAddressLine[i] ")";
+                print "[X] Defined [match address " matchAddresses[i] "] but not applied. (" FILENAME " line: " matchAddressLine[i] ")";
             found = 0;
         }
     }
     else
-        print "[X]: No crypto map properly defined"
+        print "[X] No crypto map properly defined (" FILENAME ")";
     
+    for(i = 0; i < length(cryptoMapsAppliedId); ++i)
+    {
+        for(j = 0; j < length(cryptoMapsId); ++j)
+        {
+            if(cryptoMapsAppliedId[i] == cryptoMapsId[j])
+            {
+                found = 1
+                break;
+            }
+        }
+        if(!found)
+            print "[X] Applied [crypto map " cryptoMapsAppliedId[i] "] but not defined. (" FILENAME " line: " cryptoMapAppliedLine[i] ")";
+        found = 0;
+    }
 }
 ' $1 $2 $3

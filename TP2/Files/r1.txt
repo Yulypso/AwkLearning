@@ -5,7 +5,7 @@ ip prefix-list bgp-deny seq 15 deny 10.0.0.0/8 le 32
 ip prefix-list bgp-deny seq 20 deny 172.16.0.0/12 le 32
 ip prefix-list bgp-deny seq 999 permit 0.0.0.0/0 le 32
 
-interface looopback
+interface loopback
  ip address 10.0.0.1
 
 router bgp 4

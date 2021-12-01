@@ -1,6 +1,6 @@
 hostname r2
 
-interface looopback
+interface loopback
  ip address 10.0.0.2
 
 router bgp 4

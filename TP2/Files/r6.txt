@@ -1,6 +1,6 @@
 hostname r6
 
-interface looopback
+interface loopback
  ip address 13.0.0.2
 
 router bgp 6

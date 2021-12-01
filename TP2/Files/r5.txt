@@ -1,6 +1,6 @@
 hostname r5
 
-interface looopback
+interface loopback
  ip address 13.0.0.1
 
 router bgp 2

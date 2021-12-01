@@ -2,8 +2,8 @@ gawk '
 BEGIN {
     i = -1;
     j = 0;
-    interfaces[0] = ""
-    interfaceContents[0][0] = ""
+    interfaces[0] = "";
+    interfaceContents[0][0] = "";
 }
 {
     if($1 == "!")

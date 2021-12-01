@@ -13,9 +13,9 @@
 ```bash
 $ git clone https://github.com/Yulypso/RichAwk.git
 $ cd RichAwk
-$ python3 -m venv .venv
-$ source ./.venv/bin/activate
-$ pip install -r requirements.txt
+
+# required libraries
+$ sage --pip install graphviz
 ```
 
 ---
@@ -42,6 +42,9 @@ $ ./IPSec/test9.awk ./Files/conf[1-3].unix
 ### TP2
 
 ```bash
-$ cd TP2/Vpn_Bgp_Mpls
+$ cd ./TP2/Vpn_Bgp_Mpls
 $ ./test1.sh
+
+$ cd./TP2/Bgp_As
+$ ./test2.sh
 ```

@@ -8,7 +8,7 @@ crypto isakmp policy 10
 !
 crypto ipsec transform-set chiff_auth esp-3des esp-md5-hmac
 !
-crypto map ciper1 10 ipsec-isakmp
+crypto map cipher1 10 ipsec-isakmp
  set peer ip4
  set transform-set chiff_auth
  match address 110

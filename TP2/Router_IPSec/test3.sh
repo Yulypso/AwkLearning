@@ -7,9 +7,7 @@
 chmod +x ipsec.sage
 ./ipsec.sage
 
-rm ipsec.gv
-rm ipsec.sage.py
-rm ipsec.txt
-rm sorted_ipsec.txt
-rm ipsec_graph.txt
-rm ipsec.sage
+rm *.gv
+rm *.txt
+rm *.py
+rm *.sage

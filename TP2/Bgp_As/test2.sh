@@ -6,8 +6,7 @@
 chmod +x perimeter.sage
 ./perimeter.sage
 
-rm bgp-as.gv
-rm perimeter.txt
-rm sorted_perimeter.txt
-rm perimeter.sage
-rm perimeter.sage.py
+rm *.gv
+rm *.txt
+rm *.py
+rm *.sage

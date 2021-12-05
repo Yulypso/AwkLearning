@@ -45,6 +45,12 @@ $ ./IPSec/test9.awk ./Files/conf[1-3].unix
 $ cd ./TP2/Vpn_Bgp_Mpls
 $ ./test1.sh
 
-$ cd./TP2/Bgp_As
+$ cd ./TP2/Bgp_As
 $ ./test2.sh
+
+$ cd ./TP2/Router_IPSec
+$ ./test3.sh
+
+$ cd ./TP2/Commutateur_VLAN
+$ ./test4.sh
 ```

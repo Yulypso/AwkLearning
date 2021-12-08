@@ -211,30 +211,56 @@ length($5) (=[18-22]): 22
 
 <br/>
 
-#### Step 4 TODO
+#### Step 4 FLEX (0m0.2s Non consistant)
 
 ```bash
 $ make check.flex
-$ make -f Makefile.run step3
+$ make -f Makefile.run step4
 
-time find conf -name "router.unix.*" -print | xargs -P 1 -n 1 ./check.flex > zz.output.step3.txt || true
+time find conf -name "router.unix.*" -print | xargs -P 50 -n 50 ./check.flex > zz.output.step4.txt || true
 
-real    0m23.165s
-user    0m5.473s
-sys     0m8.865s
+real    0m0.203s
+user    0m0.117s
+sys     0m0.186s
 ```
 
 ```bash
-$ ./compliance.awk zz.output.step3.txt
+$ ./compliance.awk zz.output.step4.txt
 
 Number of fields : 5
 length($1) (=2): 2
 length($2) (=12): 12
 length($3) (=5): 5
 length($4) (=3): 3
-length($5) (=[18-22]): 18
 length($5) (=[18-22]): 19
 length($5) (=[18-22]): 20
 length($5) (=[18-22]): 21
-length($5) (=[18-22]): 22
+```
+
+<br/>
+
+#### Step 5 FLEX ()
+
+```bash
+$ make check.flex
+$ make -f Makefile.run step5
+
+time find conf -name "router.unix.*" -print | xargs -P 50 -n 50 ./check.flex > zz.output.step4.txt || true
+
+real    0m0.203s
+user    0m0.117s
+sys     0m0.186s
+```
+
+```bash
+$ ./compliance.awk zz.output.step4.txt
+
+Number of fields : 5
+length($1) (=2): 2
+length($2) (=12): 12
+length($3) (=5): 5
+length($4) (=3): 3
+length($5) (=[18-22]): 19
+length($5) (=[18-22]): 20
+length($5) (=[18-22]): 21
 ```

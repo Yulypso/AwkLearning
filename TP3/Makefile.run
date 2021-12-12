@@ -54,3 +54,9 @@ step7:
 	@./step7.flex router.unix
 	@rm step7.flex.c
 	@rm step7.flex
+
+step8:
+	@make step8.flex
+	./step8.flex router.unix
+	@rm step8.flex.c
+	@rm step8.flex

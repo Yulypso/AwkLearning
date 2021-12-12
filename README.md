@@ -331,3 +331,30 @@ $ make -f Makefile.run step6
 Nb ip: 7
 Nb any: 4
 ```
+
+<br/>
+
+#### Step 7 FLEX: Ecrire un programme FLEX qui vérifie que access-class in & out sont mis sur toutes les lignes vty dans le fichier router.unix
+
+
+```bash
+$ make -f Makefile.run step7
+
+access-class 27 out not implemented in line vty
+```
+
+<br/>
+
+#### Step 8 FLEX: Ecrire un programme FLEX qui vérifie que la consistant des ACLs defs pas refs et refs pas defs dans le router.unix. On pourra reprendre le programme en awk et contrôler les performances avec le programme en FLEX sur les milliers d'instances crées de router.unix dans le cadre du TP.
+
+
+```bash
+$ make -f Makefile.run step8
+
+[x] Defined ACL 28 but not applied
+[x] Defined ACL 24 but not applied
+[x] Applied ACL 23 but not defined
+[x] Applied ACL 23 but not defined
+[x] Applied ACL 27 but not defined
+[x] Applied ACL 23 but not defined
+```

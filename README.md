@@ -77,32 +77,44 @@ $ cd ./TP3
 ```
 ---
 
+
+<br/>
+
+#### Step 0 - Generate router.unix.* files
+
+```bash
+# using generate.sh
+$ make -f Makefile.run step0
+```
+
 <br/>
 
 #### Step 1 - AWK (2m12s Consistant)
 
 ```bash
 $ make -f Makefile.run step1
-$ ./compliance.awk zz.output.step1.txt
 
 time find conf -name "router.unix.*" -print | xargs -P 1 -n 1 ./check.int.sh > zz.output.step1.txt || true
 
-real    2m12.079s
-user    0m44.351s
-sys     0m46.534s
+real    2m9.257s
+user    0m44.215s
+sys     0m48.917s
 ```
 
 ```bash
-Number of fields : 5
-length($1) (=2): 2
-length($2) (=12): 12
-length($3) (=5): 5
-length($4) (=3): 3
-length($5) (=[18-22]): 18
-length($5) (=[18-22]): 19
-length($5) (=[18-22]): 20
-length($5) (=[18-22]): 21
-length($5) (=[18-22]): 22
+./compliance.awk zz.output.step1.txt
+
+Nb lines         (should be 20000)   : 20000
+Number of fields (should be 5)       : 5
+length($1)       (should be 2)       : 2
+length($2)       (should be 12)      : 12
+length($3)       (should be 5)       : 5
+length($4)       (should be 3)       : 3
+length($5)       (should be [18..22]): 18
+length($5)       (should be [18..22]): 19
+length($5)       (should be [18..22]): 20
+length($5)       (should be [18..22]): 21
+length($5)       (should be [18..22]): 22
 ```
 
 <br/>
@@ -122,61 +134,68 @@ sys     0m1.537s
 ```bash
 $ ./compliance.awk zz.output.step2.txt
 
-Number of fields : 1
-Number of fields : 2
-Number of fields : 3
-Number of fields : 4
-Number of fields : 5
-Number of fields : 6
-Number of fields : 7
-Number of fields : 8
-Number of fields : 9
-length($1) (=2): 1
-length($1) (=2): 11
-length($1) (=2): 13
-length($1) (=2): 15
-length($1) (=2): 17
-length($1) (=2): 19
-length($1) (=2): 2
-length($1) (=2): 20
-length($1) (=2): 21
-length($1) (=2): 3
-length($2) (=12): 0
-length($2) (=12): 12
-length($2) (=12): 21
-length($2) (=12): 3
-length($3) (=5): 0
-length($3) (=5): 21
-length($3) (=5): 5
-length($3) (=5): 6
-length($3) (=5): 7
-length($4) (=3): 0
-length($4) (=3): 1
-length($4) (=3): 12
-length($4) (=3): 2
-length($4) (=3): 21
-length($4) (=3): 3
-length($4) (=3): 4
-length($4) (=3): 5
-length($4) (=3): 6
-length($5) (=[18-22]): 0
-length($5) (=[18-22]): 1
-length($5) (=[18-22]): 12
-length($5) (=[18-22]): 17
-length($5) (=[18-22]): 18
-length($5) (=[18-22]): 19
-length($5) (=[18-22]): 2
-length($5) (=[18-22]): 20
-length($5) (=[18-22]): 21
-length($5) (=[18-22]): 22
-length($5) (=[18-22]): 23
-length($5) (=[18-22]): 3
-length($5) (=[18-22]): 4
-length($5) (=[18-22]): 5
-length($5) (=[18-22]): 6
-length($5) (=[18-22]): 7
-length($5) (=[18-22]): 8
-length($5) (=[18-22]): 9
+Nb lines         (should be 20000)   : 20000
+Number of fields (should be 5)       : 1
+Number of fields (should be 5)       : 2
+Number of fields (should be 5)       : 3
+Number of fields (should be 5)       : 4
+Number of fields (should be 5)       : 5
+Number of fields (should be 5)       : 6
+Number of fields (should be 5)       : 7
+Number of fields (should be 5)       : 8
+Number of fields (should be 5)       : 9
+length($1)       (should be 2)       : 1
+length($1)       (should be 2)       : 13
+length($1)       (should be 2)       : 15
+length($1)       (should be 2)       : 17
+length($1)       (should be 2)       : 19
+length($1)       (should be 2)       : 2
+length($1)       (should be 2)       : 20
+length($1)       (should be 2)       : 21
+length($1)       (should be 2)       : 3
+length($2)       (should be 12)      : 0
+length($2)       (should be 12)      : 12
+length($2)       (should be 12)      : 20
+length($2)       (should be 12)      : 21
+length($2)       (should be 12)      : 3
+length($3)       (should be 5)       : 0
+length($3)       (should be 5)       : 21
+length($3)       (should be 5)       : 25
+length($3)       (should be 5)       : 5
+length($3)       (should be 5)       : 6
+length($3)       (should be 5)       : 7
+length($4)       (should be 3)       : 0
+length($4)       (should be 3)       : 1
+length($4)       (should be 3)       : 12
+length($4)       (should be 3)       : 19
+length($4)       (should be 3)       : 2
+length($4)       (should be 3)       : 20
+length($4)       (should be 3)       : 21
+length($4)       (should be 3)       : 23
+length($4)       (should be 3)       : 3
+length($4)       (should be 3)       : 4
+length($4)       (should be 3)       : 5
+length($5)       (should be [18..22]): 0
+length($5)       (should be [18..22]): 1
+length($5)       (should be [18..22]): 10
+length($5)       (should be [18..22]): 12
+length($5)       (should be [18..22]): 14
+length($5)       (should be [18..22]): 15
+length($5)       (should be [18..22]): 17
+length($5)       (should be [18..22]): 18
+length($5)       (should be [18..22]): 19
+length($5)       (should be [18..22]): 2
+length($5)       (should be [18..22]): 20
+length($5)       (should be [18..22]): 21
+length($5)       (should be [18..22]): 22
+length($5)       (should be [18..22]): 23
+length($5)       (should be [18..22]): 25
+length($5)       (should be [18..22]): 27
+length($5)       (should be [18..22]): 3
+length($5)       (should be [18..22]): 4
+length($5)       (should be [18..22]): 5
+length($5)       (should be [18..22]): 6
+length($5)       (should be [18..22]): 8
 ```
 
 <br/>
@@ -184,7 +203,6 @@ length($5) (=[18-22]): 9
 #### Step 3 - FLEX (0m23s Consistant)
 
 ```bash
-$ make check.flex
 $ make -f Makefile.run step3
 
 time find conf -name "router.unix.*" -print | xargs -P 1 -n 1 ./check.flex > zz.output.step3.txt || true
@@ -197,24 +215,24 @@ sys     0m8.865s
 ```bash
 $ ./compliance.awk zz.output.step3.txt
 
-Number of fields : 5
-length($1) (=2): 2
-length($2) (=12): 12
-length($3) (=5): 5
-length($4) (=3): 3
-length($5) (=[18-22]): 18
-length($5) (=[18-22]): 19
-length($5) (=[18-22]): 20
-length($5) (=[18-22]): 21
-length($5) (=[18-22]): 22
+Nb lines         (should be 20000)   : 20000
+Number of fields (should be 5)       : 5
+length($1)       (should be 2)       : 2
+length($2)       (should be 12)      : 12
+length($3)       (should be 5)       : 5
+length($4)       (should be 3)       : 3
+length($5)       (should be [18..22]): 18
+length($5)       (should be [18..22]): 19
+length($5)       (should be [18..22]): 20
+length($5)       (should be [18..22]): 21
+length($5)       (should be [18..22]): 22
 ```
 
 <br/>
 
-#### Step 4 FLEX (0m0.2s Non consistant)
+#### Step 4 FLEX (0m0.2s Parfois Consistant et Non consistant)
 
 ```bash
-$ make check.flex
 $ make -f Makefile.run step4
 
 time find conf -name "router.unix.*" -print | xargs -P 50 -n 50 ./check.flex > zz.output.step4.txt || true
@@ -227,40 +245,89 @@ sys     0m0.186s
 ```bash
 $ ./compliance.awk zz.output.step4.txt
 
-Number of fields : 5
-length($1) (=2): 2
-length($2) (=12): 12
-length($3) (=5): 5
-length($4) (=3): 3
-length($5) (=[18-22]): 19
-length($5) (=[18-22]): 20
-length($5) (=[18-22]): 21
-```
-
-<br/>
-
-#### Step 5 FLEX ()
-
-```bash
-$ make check.flex
-$ make -f Makefile.run step5
-
-time find conf -name "router.unix.*" -print | xargs -P 50 -n 50 ./check.flex > zz.output.step4.txt || true
-
-real    0m0.203s
-user    0m0.117s
-sys     0m0.186s
+Nb lines         (should be 20000)   : 20000
+Number of fields (should be 5)       : 5
+length($1)       (should be 2)       : 2
+length($2)       (should be 12)      : 12
+length($3)       (should be 5)       : 5
+length($4)       (should be 3)       : 3
+length($5)       (should be [18..22]): 18
+length($5)       (should be [18..22]): 19
+length($5)       (should be [18..22]): 20
+length($5)       (should be [18..22]): 21
+length($5)       (should be [18..22]): 22
 ```
 
 ```bash
 $ ./compliance.awk zz.output.step4.txt
 
-Number of fields : 5
-length($1) (=2): 2
-length($2) (=12): 12
-length($3) (=5): 5
-length($4) (=3): 3
-length($5) (=[18-22]): 19
-length($5) (=[18-22]): 20
-length($5) (=[18-22]): 21
+Nb lines         (should be 20000)   : 20000
+Number of fields (should be 5)       : 2
+Number of fields (should be 5)       : 5
+Number of fields (should be 5)       : 6
+Number of fields (should be 5)       : 7
+Number of fields (should be 5)       : 8
+length($1)       (should be 2)       : 1
+length($1)       (should be 2)       : 2
+length($1)       (should be 2)       : 3
+length($2)       (should be 12)      : 12
+length($2)       (should be 12)      : 21
+length($3)       (should be 5)       : 0
+length($3)       (should be 5)       : 5
+length($3)       (should be 5)       : 6
+length($4)       (should be 3)       : 0
+length($4)       (should be 3)       : 12
+length($4)       (should be 3)       : 2
+length($4)       (should be 3)       : 3
+length($5)       (should be [18..22]): 0
+length($5)       (should be [18..22]): 12
+length($5)       (should be [18..22]): 18
+length($5)       (should be [18..22]): 19
+length($5)       (should be [18..22]): 20
+length($5)       (should be [18..22]): 21
+length($5)       (should be [18..22]): 22
+length($5)       (should be [18..22]): 3
+length($5)       (should be [18..22]): 5
+```
+
+<br/>
+
+#### Step 5 FLEX (0m0.631s Consistant)
+
+```bash
+$ make -f Makefile.run step5
+
+time find conf -name "router.unix.*" -print | xargs -P 50 -n 50 ./check.race || true
+
+real    0m0.631s
+user    0m0.323s
+sys     0m0.963s
+cat tmp/* > zz.output.step5.txt
+```
+
+```bash
+./compliance.awk zz.output.step5.txt
+
+Nb lines         (should be 20000)   : 20000
+Number of fields (should be 5)       : 5
+length($1)       (should be 2)       : 2
+length($2)       (should be 12)      : 12
+length($3)       (should be 5)       : 5
+length($4)       (should be 3)       : 3
+length($5)       (should be [18..22]): 18
+length($5)       (should be [18..22]): 19
+length($5)       (should be [18..22]): 20
+length($5)       (should be [18..22]): 21
+length($5)       (should be [18..22]): 22
+```
+
+<br/>
+
+#### Step 6 FLEX: compter le nombre de mot "ip" et "any" dans le fichier router.unix
+
+```bash
+$ make -f Makefile.run step6
+
+Nb ip: 7
+Nb any: 4
 ```

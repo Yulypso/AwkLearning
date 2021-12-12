@@ -8,19 +8,49 @@ clean:
 	rm -r tmp
 	mkdir tmp
 
+step0:
+	@make generate
+
 step1:
 	time find conf -name "router.unix.*" -print | xargs -P 1 -n 1 ./check.int.sh > zz.output.step1.txt || true
+	@./compliance.awk zz.output.step1.txt
 
 step2:
 	time find conf -name "router.unix.*" -print | xargs -P 50 -n 50 ./check.int.sh > zz.output.step2.txt || true
+	@./compliance.awk zz.output.step2.txt
 
 step3:
+	@make check.flex
 	time find conf -name "router.unix.*" -print | xargs -P 1 -n 1 ./check.flex > zz.output.step3.txt || true
+	@rm check.flex.c
+	@rm check.flex
+	@./compliance.awk zz.output.step3.txt
 
 step4:
+	@make check.flex
 	time find conf -name "router.unix.*" -print | xargs -P 50 -n 50 ./check.flex > zz.output.step4.txt || true
+	@rm check.flex.c
+	@rm check.flex
+	./compliance.awk zz.output.step4.txt
 
 step5:
+	@make check.race
+	@rm -r tmp
+	@mkdir tmp
 	time find conf -name "router.unix.*" -print | xargs -P 50 -n 50 ./check.race || true
-	cat tmp/* > zz.output.step5.txt
+	@cat tmp/* > zz.output.step5.txt
+	@rm check.race.c
+	@rm check.race
+	./compliance.awk zz.output.step5.txt
 
+step6:
+	@make step6.flex
+	@./step6.flex router.unix
+	@rm step6.flex.c
+	@rm step6.flex
+
+step7:
+	@make step7.flex
+	@./step7.flex router.unix
+	@rm step7.flex.c
+	@rm step7.flex

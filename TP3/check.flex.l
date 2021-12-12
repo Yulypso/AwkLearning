@@ -1,6 +1,7 @@
 %{
 	#include <stdio.h>
 	char filename[100];
+    
     int access_group_set = 0;
     int line = 0;
 %}
@@ -32,13 +33,19 @@
 
 %%
 
-int main(int argc, char **argv ) {
+int main(int argc, char **argv) {
 
-    strncpy(filename,argv[1],strlen(argv[1]));
-    filename[strlen(argv[1])] = '\0';
+    if (argc > 1) 
+    {
+        for (int i = 1; i < argc; i++)
+        {
+            strncpy(filename,argv[i], strlen(argv[i]));
+            filename[strlen(argv[i])] = '\0';
 
-
-    yyin = fopen( argv[1], "r" );
-    yylex();
-    fclose(yyin);
+            yyin = fopen(argv[i], "r");
+            yylex();
+            fclose(yyin);
+        }
+    }
+    return 0;
 }

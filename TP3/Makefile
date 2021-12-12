@@ -8,9 +8,9 @@ default:
 	@echo "gmake check.flex|check.basic|check.race"
 
 %:%.l
-	flex -B -t -F $< > $(basename $<).c
-	$(CC) -O3 $(basename $<).c -o $(basename $<) -L$(LIBFLEX) -lfl
-	$(RM) -f lex.yy.c
+	@flex -B -t -F $< > $(basename $<).c
+	@$(CC) -O3 $(basename $<).c -o $(basename $<) -L$(LIBFLEX) -lfl
+	@$(RM) -f lex.yy.c
 
 clean:
 	$(RM) -f *.core check.flex check.basic check.race
